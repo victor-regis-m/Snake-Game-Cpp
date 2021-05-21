@@ -316,6 +316,26 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
+{
+	if (x1 < x0)
+		std::swap(x0, x1);
+	if (y1 < y0)
+		std::swap(y0, y1);
+	int deltaX = x1 - x0;
+	int deltaY = y1 - y0;
+
+	for (int i = 0; i < deltaX; i++)
+		for (int j = 0; j < deltaY; j++)
+			PutPixel(x0 + i, y0 + j, c);
+
+}
+
+void Graphics::DrawRectDim(int x0, int y0, int width, int height, Color c)
+{
+	DrawRect(x0, y0, x0 + width, y0 + height, c);
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception
