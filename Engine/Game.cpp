@@ -26,7 +26,14 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	brd(gfx),
-	rng(std::random_device()())
+	snake(brd.GetBoardCenter()),
+	moveDirection{-1,0},
+	rng(rd()),
+	xDist(brd.GetBoardCenter().x - (brd.GetBoardWidth() - 2) / 2,
+		brd.GetBoardCenter().x + (brd.GetBoardWidth() - 2) / 2),
+	yDist(brd.GetBoardCenter().y - (brd.GetBoardHeight() - 2) / 2,
+		brd.GetBoardCenter().y + (brd.GetBoardHeight() - 2)/ 2),
+	collectible(Location{ xDist(rng), yDist(rng) })
 {
 }
 
@@ -40,16 +47,36 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	GetMovementInput();
+	if (++frameCounter == framesPerMove)
+	{
+		snake.MoveBy(moveDirection);
+		collectible.Collider(snake);
+		snake.CheckHeadInBoard(brd);
+		collectible.Relocate(Location{ xDist(rng),yDist(rng) });
+		frameCounter = 0;
+	}
 }
 
 void Game::ComposeFrame()
 {
-	std::uniform_int_distribution<int> colorDist(0, 255);
-	for(int y=0; y<brd.GetBoardHeight(); ++y)
-		for (int x = 0; x < brd.GetBoardWidth(); ++x)
-		{
-			Location loc{ x, y };
-			Color c(colorDist(rng), colorDist(rng), colorDist(rng));
-			brd.DrawCell(loc, c);
-		}
+	snake.Draw(brd);
+	brd.DrawBoardEdges();
+	collectible.Draw(brd);
+}
+
+void Game::GetMovementInput()
+{
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+		if (moveDirection != Location{ 1,0 })
+			moveDirection = Location{ -1,0 };
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+		if (moveDirection != Location{ -1,0 })
+			moveDirection = Location{ 1,0 };
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+		if (moveDirection != Location{ 0,1 })
+			moveDirection = Location{ 0,-1 };
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+		if (moveDirection != Location{ 0,-1 })
+			moveDirection = Location{ 0,1 };
 }

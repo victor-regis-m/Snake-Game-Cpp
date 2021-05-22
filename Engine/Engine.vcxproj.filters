@@ -60,6 +60,9 @@
     <ClInclude Include="Snake.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Collectible.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -90,6 +93,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Location.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collectible.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -24,6 +24,8 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Board.h"
+#include "Snake.h"
+#include "Collectible.h"
 #include <random>
 
 class Game
@@ -39,6 +41,7 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void GetMovementInput();
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -46,5 +49,13 @@ private:
 	/*  User Variables              */
 	/********************************/
 	Board brd;
+	Snake snake;
+	Location moveDirection;
+	std::random_device rd;
 	std::mt19937 rng;
+	std::uniform_int_distribution<int> xDist;
+	std::uniform_int_distribution<int> yDist;
+	Collectible collectible;
+	int framesPerMove = 30;
+	int frameCounter = 0;
 };
