@@ -56,6 +56,8 @@ private:
 	std::uniform_int_distribution<int> xDist;
 	std::uniform_int_distribution<int> yDist;
 	Collectible collectible;
-	int framesPerMove = 30;
+	int framesPerMove = 10;
 	int frameCounter = 0;
+	bool hasStarted = true;
+	Location lastMovedDirection;
 };

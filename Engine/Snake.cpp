@@ -46,10 +46,10 @@ void Snake::CheckHeadInBoard(const Board& brd)
 	int halfWidth = brd.GetBoardWidth() / 2;
 	int halfHeight = brd.GetBoardHeight() / 2;
 	Location headPos = GetSnakeHeadPos();
-	isAlive = headPos.x > center.x - halfWidth &&
+	isAlive = isAlive && (headPos.x > center.x - halfWidth &&
 		headPos.x < center.x + halfWidth &&
 		headPos.y > center.y - halfHeight &&
-		headPos.y < center.y + halfHeight;
+		headPos.y < center.y + halfHeight);
 }
 
 void Snake::Segment::InitHead(const Location& locInput)
@@ -78,7 +78,7 @@ void Snake::Segment::MoveBy(const Location& deltaLoc)
 
 void Snake::Segment::Draw(Board& brd) const
 {
-	brd.DrawCell(loc, c);
+	brd.DrawOutlinedCell(loc, c);
 }
 
 Location& Snake::Segment::GetPos()
@@ -89,4 +89,40 @@ Location& Snake::Segment::GetPos()
 void Snake::Segment::SetPos(const Location& newLoc)
 {
 	loc = newLoc;
+}
+
+void Snake::CheckSelfCollision()
+{
+	for (int i = 1; i < nSegments; ++i)
+	{
+		isAlive = isAlive && !(GetSnakeHeadPos() == segments[i].GetPos());
+	}
+}
+
+bool Snake::CheckIfAlive()
+{
+	return isAlive;
+}
+
+int Snake::GetSnakeSize()
+{
+	return nSegments;
+}
+
+bool Snake::CheckConflictingSnakePosition(Location loc)
+{
+	bool conflicting = false;
+	for (int i = 0; i < nSegments; ++i)
+		conflicting = conflicting || (loc == segments[i].GetPos());
+	return conflicting;
+}
+
+void Snake::Score()
+{
+	points += 10;
+}
+
+int Snake::GetPoints()
+{
+	return points;
 }

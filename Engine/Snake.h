@@ -25,6 +25,12 @@ public:
 	void Draw(Board& brd) const;
 	Location& GetSnakeHeadPos();
 	void CheckHeadInBoard(const Board& brd);
+	void CheckSelfCollision();
+	bool CheckIfAlive();
+	int GetSnakeSize();
+	bool CheckConflictingSnakePosition(Location loc);
+	void Score();
+	int GetPoints();
 
 private: 
 	static constexpr int maxSnakeSize = 100;
@@ -33,4 +39,5 @@ private:
 	Segment segments[maxSnakeSize];
 	int nSegments = 3;
 	bool isAlive = true;
+	int points = 0;
 };

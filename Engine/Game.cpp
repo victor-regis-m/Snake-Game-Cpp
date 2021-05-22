@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
 Game::Game(MainWindow& wnd)
 	:
@@ -33,7 +34,8 @@ Game::Game(MainWindow& wnd)
 		brd.GetBoardCenter().x + (brd.GetBoardWidth() - 2) / 2),
 	yDist(brd.GetBoardCenter().y - (brd.GetBoardHeight() - 2) / 2,
 		brd.GetBoardCenter().y + (brd.GetBoardHeight() - 2)/ 2),
-	collectible(Location{ xDist(rng), yDist(rng) })
+	collectible(Location{ xDist(rng), yDist(rng) }),
+	lastMovedDirection{-1,0}
 {
 }
 
@@ -47,36 +49,49 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	GetMovementInput();
-	if (++frameCounter == framesPerMove)
+	if (hasStarted)
 	{
-		snake.MoveBy(moveDirection);
-		collectible.Collider(snake);
-		snake.CheckHeadInBoard(brd);
-		collectible.Relocate(Location{ xDist(rng),yDist(rng) });
-		frameCounter = 0;
+		GetMovementInput();
+		hasStarted = snake.CheckIfAlive();
+		if (++frameCounter == framesPerMove)
+		{
+			snake.MoveBy(moveDirection);
+			snake.CheckSelfCollision();
+			lastMovedDirection = moveDirection;
+			collectible.Collider(snake);
+			snake.CheckHeadInBoard(brd);
+			collectible.Relocate(Location{ xDist(rng),yDist(rng) }, snake, rng,  xDist, yDist);
+			frameCounter = 0;
+		}
 	}
 }
 
 void Game::ComposeFrame()
 {
-	snake.Draw(brd);
-	brd.DrawBoardEdges();
-	collectible.Draw(brd);
+	if (hasStarted)
+	{
+		snake.Draw(brd);
+		brd.DrawBoardEdges();
+		collectible.Draw(brd);
+		brd.DrawTitle(Location{ 5,6 });
+		SpriteCodex::ShowScore(10, 10, snake, gfx);
+	}
+	if (!snake.CheckIfAlive())
+		SpriteCodex::DrawGameOver(340, 250, gfx);
 }
 
 void Game::GetMovementInput()
 {
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-		if (moveDirection != Location{ 1,0 })
+		if(lastMovedDirection!=Location{1,0})
 			moveDirection = Location{ -1,0 };
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-		if (moveDirection != Location{ -1,0 })
+		if (lastMovedDirection != Location{ -1,0 })
 			moveDirection = Location{ 1,0 };
 	if (wnd.kbd.KeyIsPressed(VK_UP))
-		if (moveDirection != Location{ 0,1 })
+		if (lastMovedDirection != Location{ 0,1 })
 			moveDirection = Location{ 0,-1 };
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-		if (moveDirection != Location{ 0,-1 })
+		if (lastMovedDirection != Location{ 0,-1 })
 			moveDirection = Location{ 0,1 };
 }
