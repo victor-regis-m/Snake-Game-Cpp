@@ -59,17 +59,25 @@ void Game::UpdateModel()
 		GetMovementInput();
 		if (++frameCounter == framesPerMove-speedUp)
 		{
-			snake.MoveBy(moveDirection);
-			snake.CheckSelfCollision();
-			lastMovedDirection = moveDirection;
-			collectible.Collider(snake);
-			snake.CheckHeadInBoard(brd);
-			collectible.Relocate(Location{ xDist(rng),yDist(rng) }, snake, rng,  xDist, yDist);
+			if (snake.CheckIfAlive())
+			{
+				sfxSlither.Play(rng, 0.08f);
+				snake.MoveBy(moveDirection);
+				snake.CheckSelfCollision();
+				lastMovedDirection = moveDirection;
+				collectible.Collider(snake);
+				snake.CheckHeadInBoard(brd);
+				if (collectible.Relocate(Location{ xDist(rng),yDist(rng) }, snake, rng, xDist, yDist))
+					sfxEat.Play(rng, 0.8f);
+			}
 			frameCounter = 0;
 		}
 	}
 	if (!snake.CheckIfAlive())
+	{
 		highscoreTracker.HighScoreCheckSet(snake.GetPoints());
+		sndMusic.StopAll();
+	}
 }
 
 void Game::ComposeFrame()
@@ -90,11 +98,16 @@ void Game::ComposeFrame()
 	{
 		SpriteCodex::DrawTitle(300, 210, gfx);
 		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			sndMusic.Play(1.0f, 0.6f);
 			hasStarted = true;
+		}
 	}
 	if (!snake.CheckIfAlive())
 	{
 		SpriteCodex::DrawGameOver(340, 250, gfx);
+		if(endFramesCounter==1)
+			sndTitle.Play();
 		if (endFramesCounter++ == endFramesCount)
 		{
 			snake = Snake(brd.GetBoardCenter());

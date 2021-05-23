@@ -27,6 +27,7 @@
 #include "Snake.h"
 #include "Collectible.h"
 #include "HighscoreTracker.h"
+#include "SoundEffect.h"
 #include <random>
 
 class Game
@@ -57,6 +58,10 @@ private:
 	std::mt19937 rng;
 	std::uniform_int_distribution<int> xDist;
 	std::uniform_int_distribution<int> yDist;
+	SoundEffect sfxEat = SoundEffect({ L"Sounds\\Eat.wav" });
+	SoundEffect sfxSlither = SoundEffect({ L"Sounds\\Slither0.wav",L"Sounds\\Slither1.wav",L"Sounds\\Slither2.wav" });
+	Sound sndMusic = Sound(L"Sounds\\Music_Loop.wav", Sound::LoopType::AutoFullSound);
+	Sound sndTitle = Sound(L"Sounds\\Title.wav");
 	Collectible collectible;
 	int framesPerMove = 12;
 	int frameCounter = 0;

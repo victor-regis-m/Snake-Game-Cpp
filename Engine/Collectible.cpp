@@ -7,7 +7,7 @@ Collectible::Collectible( Location& spawnLoc)
 {
 }
 
-void Collectible::Relocate(Location& newLoc, Snake& snake,
+bool Collectible::Relocate(Location& newLoc, Snake& snake,
 	std::mt19937& rng,
 	std::uniform_int_distribution<int>& xDist,
 	std::uniform_int_distribution<int>& yDist)
@@ -18,7 +18,9 @@ void Collectible::Relocate(Location& newLoc, Snake& snake,
 			newLoc = Location{ xDist(rng), yDist(rng) };
 		loc = newLoc;
 		isActive = true;
+		return true;
 	}
+	return false;
 }
 
 void Collectible::Draw(Board& brd) const
