@@ -51,9 +51,12 @@ void Game::UpdateModel()
 {
 	if (hasStarted)
 	{
+		if (floor(snake.GetPoints() / 100) <= 6)
+			speedUp = floor(snake.GetPoints() / 50);
+		else
+			speedUp = 6;
 		GetMovementInput();
-		hasStarted = snake.CheckIfAlive();
-		if (++frameCounter == framesPerMove)
+		if (++frameCounter == framesPerMove-speedUp)
 		{
 			snake.MoveBy(moveDirection);
 			snake.CheckSelfCollision();
@@ -70,14 +73,32 @@ void Game::ComposeFrame()
 {
 	if (hasStarted)
 	{
-		snake.Draw(brd);
-		brd.DrawBoardEdges();
-		collectible.Draw(brd);
-		brd.DrawTitle(Location{ 5,6 });
-		SpriteCodex::ShowScore(10, 10, snake, gfx);
+		if (snake.CheckIfAlive())
+		{
+			snake.Draw(brd);
+			brd.DrawBoardEdges();
+			collectible.Draw(brd);
+			brd.DrawTitle(Location{ 5,6 });
+			SpriteCodex::ShowScore(10, 10, snake, gfx);
+		}
+	}
+	else
+	{
+		SpriteCodex::DrawTitle(300, 210, gfx);
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+			hasStarted = true;
 	}
 	if (!snake.CheckIfAlive())
+	{
 		SpriteCodex::DrawGameOver(340, 250, gfx);
+		if (endFramesCounter++ == endFramesCount)
+		{
+			snake = Snake(brd.GetBoardCenter());
+			hasStarted = false;
+			endFramesCounter = 0;
+			moveDirection = Location{ -1,0 };
+		}
+	}
 }
 
 void Game::GetMovementInput()

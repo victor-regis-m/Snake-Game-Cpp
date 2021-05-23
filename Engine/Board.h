@@ -7,6 +7,7 @@ public:
 	Board(Graphics& gfx);
 	void DrawFullCell(const Location& loc, Color c);
 	void DrawOutlinedCell(const Location& loc, Color c);
+	void DrawCollectible(const Location& loc);
 	void DrawTitle(const Location& loc);
 	void DrawBoardEdges();
 	int GetBoardWidth() const;

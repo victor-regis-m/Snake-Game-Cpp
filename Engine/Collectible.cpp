@@ -24,7 +24,7 @@ void Collectible::Relocate(Location& newLoc, Snake& snake,
 void Collectible::Draw(Board& brd) const
 {
 	if(isActive)
-		brd.DrawOutlinedCell(loc, Color(255, 255, 255));
+		brd.DrawCollectible(loc);
 }
 
 void Collectible::Collider(Snake& snake)
