@@ -28,14 +28,15 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	brd(gfx),
 	snake(brd.GetBoardCenter()),
-	moveDirection{-1,0},
+	moveDirection{ -1,0 },
 	rng(rd()),
 	xDist(brd.GetBoardCenter().x - (brd.GetBoardWidth() - 2) / 2,
 		brd.GetBoardCenter().x + (brd.GetBoardWidth() - 2) / 2),
 	yDist(brd.GetBoardCenter().y - (brd.GetBoardHeight() - 2) / 2,
-		brd.GetBoardCenter().y + (brd.GetBoardHeight() - 2)/ 2),
+		brd.GetBoardCenter().y + (brd.GetBoardHeight() - 2) / 2),
 	collectible(Location{ xDist(rng), yDist(rng) }),
-	lastMovedDirection{-1,0}
+	lastMovedDirection{ -1,0 },
+	highscoreTracker()
 {
 }
 
@@ -51,10 +52,10 @@ void Game::UpdateModel()
 {
 	if (hasStarted)
 	{
-		if (floor(snake.GetPoints() / 100) <= 6)
-			speedUp = floor(snake.GetPoints() / 50);
+		if (floor(snake.GetPoints() / 100) <= 7)
+			speedUp = floor(snake.GetPoints() / 100);
 		else
-			speedUp = 6;
+			speedUp = 7;
 		GetMovementInput();
 		if (++frameCounter == framesPerMove-speedUp)
 		{
@@ -67,6 +68,8 @@ void Game::UpdateModel()
 			frameCounter = 0;
 		}
 	}
+	if (!snake.CheckIfAlive())
+		highscoreTracker.HighScoreCheckSet(snake.GetPoints());
 }
 
 void Game::ComposeFrame()
@@ -80,6 +83,7 @@ void Game::ComposeFrame()
 			collectible.Draw(brd);
 			brd.DrawTitle(Location{ 5,6 });
 			SpriteCodex::ShowScore(10, 10, snake, gfx);
+			SpriteCodex::DrawHighscore(720, 10, highscoreTracker, gfx);
 		}
 	}
 	else

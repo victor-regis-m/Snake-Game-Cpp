@@ -36555,7 +36555,7 @@ void SpriteCodex::ShowScore(int x, int y, Snake& snake, Graphics& gfx)
 	int points = snake.GetPoints();
 	int thousands = floor(points / 1000.0);
 	int hundreds = floor((points - 1000 * thousands) / 100.0);
-	int dozens = (points - 100 * hundreds) / 10;
+	int dozens = (points - 1000 * thousands - 100 * hundreds) / 10;
 	Color c = Color(255, 255, 255);
 	gfx.PutPixel(x + 8, y + 3, c);
 	gfx.PutPixel(x + 7, y + 3, c);
@@ -36759,7 +36759,6 @@ void SpriteCodex::ShowScore(int x, int y, Snake& snake, Graphics& gfx)
 	gfx.PutPixel(x + 5, y + 2, c);
 	gfx.PutPixel(x + 6, y + 3, c);
 	gfx.PutPixel(x + 5, y + 3, c);
-
 	gfx.PutPixel(x + 6, y + 3, c);
 	gfx.PutPixel(x + 5, y + 3, c);
 	gfx.PutPixel(x + 4, y + 3, c);
@@ -36794,10 +36793,10 @@ void SpriteCodex::ShowScore(int x, int y, Snake& snake, Graphics& gfx)
 	gfx.PutPixel(x + 4, y + 2, c);
 	gfx.PutPixel(x + 5, y + 1, c);
 	gfx.PutPixel(x + 4, y + 1, c);
+	gfx.PutPixel(x + 5, y + 7, c);
+	gfx.PutPixel(x + 4, y + 7, c);
 	gfx.PutPixel(x + 5, y + 8, c);
 	gfx.PutPixel(x + 4, y + 8, c);
-	gfx.PutPixel(x + 5, y + 9, c);
-	gfx.PutPixel(x + 4, y + 9, c);
 	x += 12;
 	y -= 2;
 	DrawNumber(thousands, x, y, c, gfx);
@@ -37323,19 +37322,16 @@ void SpriteCodex::DrawNumber(int num, int x, int y, Color c, Graphics& gfx)
 		gfx.PutPixel(x + 3, y, c);
 		gfx.PutPixel(x + 4, y, c);
 		gfx.PutPixel(x + 5, y, c);
-
 		gfx.PutPixel(x + 1, y + 1, c);
 		gfx.PutPixel(x + 2, y + 1, c);
 		gfx.PutPixel(x + 3, y + 1, c);
 		gfx.PutPixel(x + 4, y + 1, c);
 		gfx.PutPixel(x + 5, y + 1, c);
 		gfx.PutPixel(x + 6, y + 1, c);
-
 		gfx.PutPixel(x + 1, y + 2, c);
 		gfx.PutPixel(x + 2, y + 2, c);
 		gfx.PutPixel(x + 5, y + 2, c);
 		gfx.PutPixel(x + 6, y + 2, c);
-
 		gfx.PutPixel(x, y + 3, c);
 		gfx.PutPixel(x + 1, y + 3, c);
 		gfx.PutPixel(x + 6, y + 3, c);
@@ -37346,47 +37342,163 @@ void SpriteCodex::DrawNumber(int num, int x, int y, Color c, Graphics& gfx)
 		gfx.PutPixel(x + 5, y + 4, c);
 		gfx.PutPixel(x + 6, y + 4, c);
 		gfx.PutPixel(x + 7, y + 4, c);
-
 		gfx.PutPixel(x, y + 5, c);
 		gfx.PutPixel(x + 1, y + 5, c);
 		gfx.PutPixel(x + 4, y + 5, c);
 		gfx.PutPixel(x + 6, y + 5, c);
 		gfx.PutPixel(x + 7, y + 5, c);
-
 		gfx.PutPixel(x, y + 6, c);
 		gfx.PutPixel(x + 1, y + 6, c);
 		gfx.PutPixel(x + 3, y + 6, c);
 		gfx.PutPixel(x + 6, y + 6, c);
 		gfx.PutPixel(x + 7, y + 6, c);
-
 		gfx.PutPixel(x, y + 7, c);
 		gfx.PutPixel(x + 1, y + 7, c);
 		gfx.PutPixel(x + 2, y + 7, c);
 		gfx.PutPixel(x + 6, y + 7, c);
 		gfx.PutPixel(x + 7, y + 7, c);
-
 		gfx.PutPixel(x, y + 8, c);
 		gfx.PutPixel(x + 1, y + 8, c);
 		gfx.PutPixel(x + 6, y + 8, c);
 		gfx.PutPixel(x + 7, y + 8, c);
-
 		gfx.PutPixel(x + 1, y + 9, c);
 		gfx.PutPixel(x + 2, y + 9, c);
 		gfx.PutPixel(x + 5, y + 9, c);
 		gfx.PutPixel(x + 6, y + 9, c);
-
 		gfx.PutPixel(x + 1, y + 10, c);
 		gfx.PutPixel(x + 2, y + 10, c);
 		gfx.PutPixel(x + 3, y + 10, c);
 		gfx.PutPixel(x + 4, y + 10, c);
 		gfx.PutPixel(x + 5, y + 10, c);
 		gfx.PutPixel(x + 6, y + 10, c);
-
-
 		gfx.PutPixel(x + 2, y + 11, c);
 		gfx.PutPixel(x + 3, y + 11, c);
 		gfx.PutPixel(x + 4, y + 11, c);
 		gfx.PutPixel(x + 5, y + 11, c);
 
 	}
+}
+
+void SpriteCodex::DrawHighscore(int x, int y,  HighscoreTracker& highscoreTracker, Graphics& gfx)
+{
+	int points = highscoreTracker.GetHighScore();
+	int thousands = floor(points / 1000.0);
+	int hundreds = floor((points - 1000 * thousands) / 100.0);
+	int dozens = (points - 1000 * thousands - 100 * hundreds) / 10;
+
+	Color c = Color(255, 255, 255);
+	gfx.PutPixel(x + 0, y, c);
+	gfx.PutPixel(x + 1, y, c);
+	gfx.PutPixel(x + 7, y, c);
+	gfx.PutPixel(x + 8, y, c);
+	gfx.PutPixel(x + 0, y + 1, c);
+	gfx.PutPixel(x + 1, y + 1, c);
+	gfx.PutPixel(x + 7, y + 1, c);
+	gfx.PutPixel(x + 8, y + 1, c);
+	gfx.PutPixel(x + 0, y + 2, c);
+	gfx.PutPixel(x + 1, y + 2, c);
+	gfx.PutPixel(x + 7, y + 2, c);
+	gfx.PutPixel(x + 8, y + 2, c);
+	gfx.PutPixel(x + 0, y + 3, c);
+	gfx.PutPixel(x + 1, y + 3, c);
+	gfx.PutPixel(x + 7, y + 3, c);
+	gfx.PutPixel(x + 8, y + 3, c);
+	gfx.PutPixel(x + 0, y + 4, c);
+	gfx.PutPixel(x + 1, y + 4, c);
+	gfx.PutPixel(x + 7, y + 4, c);
+	gfx.PutPixel(x + 8, y + 4, c);
+	gfx.PutPixel(x + 0, y + 5, c);
+	gfx.PutPixel(x + 1, y + 5, c);
+	gfx.PutPixel(x + 7, y + 5, c);
+	gfx.PutPixel(x + 8, y + 5, c);
+	gfx.PutPixel(x + 0, y + 6, c);
+	gfx.PutPixel(x + 1, y + 6, c);
+	gfx.PutPixel(x + 2, y + 6, c);
+	gfx.PutPixel(x + 3, y + 6, c);
+	gfx.PutPixel(x + 4, y + 6, c);
+	gfx.PutPixel(x + 5, y + 6, c);
+	gfx.PutPixel(x + 6, y + 6, c);
+	gfx.PutPixel(x + 7, y + 6, c);
+	gfx.PutPixel(x + 8, y + 6, c);
+	gfx.PutPixel(x + 0, y + 7, c);
+	gfx.PutPixel(x + 1, y + 7, c);
+	gfx.PutPixel(x + 2, y + 7, c);
+	gfx.PutPixel(x + 3, y + 7, c);
+	gfx.PutPixel(x + 4, y + 7, c);
+	gfx.PutPixel(x + 5, y + 7, c);
+	gfx.PutPixel(x + 6, y + 7, c);
+	gfx.PutPixel(x + 7, y + 7, c);
+	gfx.PutPixel(x + 8, y + 7, c);
+	gfx.PutPixel(x + 0, y + 8, c);
+	gfx.PutPixel(x + 1, y + 8, c);
+	gfx.PutPixel(x + 7, y + 8, c);
+	gfx.PutPixel(x + 8, y + 8, c);
+	gfx.PutPixel(x + 0, y + 9, c);
+	gfx.PutPixel(x + 1, y + 9, c);
+	gfx.PutPixel(x + 7, y + 9, c);
+	gfx.PutPixel(x + 8, y + 9, c);
+	gfx.PutPixel(x + 0, y + 10, c);
+	gfx.PutPixel(x + 1, y + 10, c);
+	gfx.PutPixel(x + 7, y + 10, c);
+	gfx.PutPixel(x + 8, y + 10, c);
+	gfx.PutPixel(x + 0, y + 11, c);
+	gfx.PutPixel(x + 1, y + 11, c);
+	gfx.PutPixel(x + 7, y + 11, c);
+	gfx.PutPixel(x + 8, y + 11, c);
+	gfx.PutPixel(x + 0, y + 12, c);
+	gfx.PutPixel(x + 1, y + 12, c);
+	gfx.PutPixel(x + 7, y + 12, c);
+	gfx.PutPixel(x + 8, y + 12, c);
+	gfx.PutPixel(x + 0, y + 13, c);
+	gfx.PutPixel(x + 1, y + 13, c);
+	gfx.PutPixel(x + 7, y + 13, c);
+	gfx.PutPixel(x + 8, y + 13, c);
+	gfx.PutPixel(x + 0, y + 14, c);
+	gfx.PutPixel(x + 1, y + 14, c);
+	gfx.PutPixel(x + 7, y + 14, c);
+	gfx.PutPixel(x + 8, y + 14, c);
+	x += 13;
+	y += 3;
+
+	gfx.PutPixel(x, y, c);
+	gfx.PutPixel(x + 1, y, c);
+	gfx.PutPixel(x, y + 1, c);
+	gfx.PutPixel(x + 1, y + 1, c);
+	gfx.PutPixel(x, y + 4, c);
+	gfx.PutPixel(x + 1, y + 4, c);
+	gfx.PutPixel(x, y + 5, c);
+	gfx.PutPixel(x + 1, y + 5, c);
+	gfx.PutPixel(x, y + 6, c);
+	gfx.PutPixel(x + 1, y + 6, c);
+	gfx.PutPixel(x, y + 7, c);
+	gfx.PutPixel(x + 1, y + 7, c);
+	gfx.PutPixel(x, y + 8, c);
+	gfx.PutPixel(x + 1, y + 8, c);
+	gfx.PutPixel(x, y + 9, c);
+	gfx.PutPixel(x + 1, y + 9, c);
+	gfx.PutPixel(x, y + 10, c);
+	gfx.PutPixel(x + 1, y + 10, c);
+	gfx.PutPixel(x, y + 11, c);
+	gfx.PutPixel(x + 1, y + 11, c);
+	x += 5;
+	y += 3;
+
+	gfx.PutPixel(x + 5, y + 2, c);
+	gfx.PutPixel(x + 4, y + 2, c);
+	gfx.PutPixel(x + 5, y + 1, c);
+	gfx.PutPixel(x + 4, y + 1, c);
+	gfx.PutPixel(x + 5, y + 7, c);
+	gfx.PutPixel(x + 4, y + 7, c);
+	gfx.PutPixel(x + 5, y + 8, c);
+	gfx.PutPixel(x + 4, y + 8, c);
+	x += 12;
+	y -= 2;
+
+	DrawNumber(thousands, x, y, c, gfx);
+	x += 12;
+	DrawNumber(hundreds, x, y, c, gfx);
+	x += 12;
+	DrawNumber(dozens, x, y, c, gfx);
+	x += 12;
+	DrawNumber(0, x, y, c, gfx);	
 }

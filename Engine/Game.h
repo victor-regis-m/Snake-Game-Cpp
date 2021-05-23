@@ -26,6 +26,7 @@
 #include "Board.h"
 #include "Snake.h"
 #include "Collectible.h"
+#include "HighscoreTracker.h"
 #include <random>
 
 class Game
@@ -51,6 +52,7 @@ private:
 	Board brd;
 	Snake snake;
 	Location moveDirection;
+	HighscoreTracker highscoreTracker;
 	std::random_device rd;
 	std::mt19937 rng;
 	std::uniform_int_distribution<int> xDist;

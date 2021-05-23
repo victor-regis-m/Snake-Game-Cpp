@@ -2,6 +2,7 @@
 
 #include "Graphics.h"
 #include "Snake.h"
+#include "HighscoreTracker.h"
 
 class SpriteCodex
 {
@@ -10,4 +11,5 @@ public:
 	static void DrawTitle(int x, int y, Graphics& gfx);
 	static void ShowScore(int x, int y, Snake& snake, Graphics& gfx);
 	static void DrawNumber(int num, int x, int y, Color c, Graphics& gfx);
+	static void DrawHighscore(int x, int y, HighscoreTracker& highscoreTracker, Graphics& gfx);
 };

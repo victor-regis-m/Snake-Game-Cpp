@@ -61,7 +61,23 @@ void Snake::Segment::InitHead(const Location& locInput)
 void Snake::Segment::InitBody(const Location& locInput, int i)
 {
 	Location locHead = locInput;
-	c = Snake::bodyColor;
+	int colorChoice = i % 8;
+	if(colorChoice==1)
+		c = Snake::bodyColor1;
+	else if (colorChoice == 2)
+		c = Snake::bodyColor2;
+	else if (colorChoice == 3)
+		c = Snake::bodyColor3;
+	else if (colorChoice == 4)
+		c = Snake::bodyColor4;
+	else if (colorChoice == 5)
+		c = Snake::bodyColor3;
+	else if (colorChoice == 6)
+		c = Snake::bodyColor2;
+	else if (colorChoice == 7)
+		c = Snake::bodyColor1;
+	else if (colorChoice == 0)
+		c = Snake::bodyColor5;
 	locHead+=(Location{ i,0 });
 	loc = locHead;
 }

@@ -33,9 +33,13 @@ public:
 	int GetPoints();
 
 private: 
-	static constexpr int maxSnakeSize = 100;
-	static constexpr Color headColor = Colors::Yellow;
-	static constexpr Color bodyColor = Colors::Green;
+	static constexpr int maxSnakeSize = 150;
+	static constexpr Color headColor = Color(255, 255, 0);
+	static constexpr Color bodyColor1 = Color(0, 130, 0);
+	static constexpr Color bodyColor2 = Color(0, 170, 0);
+	static constexpr Color bodyColor3 = Color(0, 210, 0);
+	static constexpr Color bodyColor4 = Color(0, 255, 0);
+	static constexpr Color bodyColor5 = Color(0, 90, 0);
 	Segment segments[maxSnakeSize];
 	int nSegments = 3;
 	bool isAlive = true;
