@@ -1,5 +1,5 @@
 # Snake-Game-Cpp
-A very cool and simple snake game which I used as a crash course to get better at some basic/intermetiate C++ concepts, and also to practice development using OOP clean code standards.
+A very cool and simple snake game which I used as a crash course to get better at some basic C++ concepts, and also to practice development using OOP clean code standards.
 
 A snake game with the following features:
 - Title - Game - End loop
