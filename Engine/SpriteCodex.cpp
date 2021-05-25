@@ -36550,7 +36550,7 @@ void SpriteCodex::DrawTitle(int x, int y, Graphics& gfx)
 	gfx.PutPixel(x + 213, y + 160, 114, 79, 48);
 }
 
-void SpriteCodex::ShowScore(int x, int y, Snake& snake, Graphics& gfx)
+void SpriteCodex::DrawScore(int x, int y, Snake& snake, Graphics& gfx)
 {
 	int points = snake.GetPoints();
 	int thousands = floor(points / 1000.0);

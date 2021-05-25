@@ -36,7 +36,8 @@ Game::Game(MainWindow& wnd)
 		brd.GetBoardCenter().y + (brd.GetBoardHeight() - 2) / 2),
 	collectible(Location{ xDist(rng), yDist(rng) }),
 	lastMovedDirection{ -1,0 },
-	highscoreTracker()
+	highscoreTracker(),
+	timer()
 {
 }
 
@@ -52,13 +53,15 @@ void Game::UpdateModel()
 {
 	if (hasStarted)
 	{
-		if (floor(snake.GetPoints() / 100) <= 7)
-			speedUp = floor(snake.GetPoints() / 100);
+		if (floor(snake.GetPoints() / 80) <= 8)
+			dificultyUpTimeReduction = floor(snake.GetPoints() / 80) * 0.05f;
 		else
-			speedUp = 7;
+			dificultyUpTimeReduction = 0.4f;
 		GetMovementInput();
-		if (++frameCounter == framesPerMove-speedUp)
+		std::chrono::duration<float> timeDifference = std::chrono::steady_clock::now() - startTime;
+		if ( timeDifference.count()> frameDuration-dificultyUpTimeReduction)
 		{
+			startTime = std::chrono::steady_clock::now();
 			if (snake.CheckIfAlive())
 			{
 				sfxSlither.Play(rng, 0.08f);
@@ -70,7 +73,6 @@ void Game::UpdateModel()
 				if (collectible.Relocate(Location{ xDist(rng),yDist(rng) }, snake, rng, xDist, yDist))
 					sfxEat.Play(rng, 0.8f);
 			}
-			frameCounter = 0;
 		}
 	}
 	if (!snake.CheckIfAlive())
@@ -90,7 +92,7 @@ void Game::ComposeFrame()
 			brd.DrawBoardEdges();
 			collectible.Draw(brd);
 			brd.DrawTitle(Location{ 5,6 });
-			SpriteCodex::ShowScore(10, 10, snake, gfx);
+			SpriteCodex::DrawScore(10, 10, snake, gfx);
 			SpriteCodex::DrawHighscore(720, 10, highscoreTracker, gfx);
 		}
 	}
@@ -106,13 +108,18 @@ void Game::ComposeFrame()
 	if (!snake.CheckIfAlive())
 	{
 		SpriteCodex::DrawGameOver(340, 250, gfx);
-		if(endFramesCounter==1)
+		if (!endTitleShown)
+		{
 			sndTitle.Play();
-		if (endFramesCounter++ == endFramesCount)
+			endTime = std::chrono::steady_clock::now();
+			endTitleShown = true;
+		}
+		std::chrono::duration <float>timeDifference = std::chrono::steady_clock::now() - endTime;
+		if (timeDifference.count()>20*frameDuration)
 		{
 			snake = Snake(brd.GetBoardCenter());
 			hasStarted = false;
-			endFramesCounter = 0;
+			endTitleShown = false;
 			moveDirection = Location{ -1,0 };
 		}
 	}

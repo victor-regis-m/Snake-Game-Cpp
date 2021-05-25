@@ -28,6 +28,7 @@
 #include "Collectible.h"
 #include "HighscoreTracker.h"
 #include "SoundEffect.h"
+#include "FrameTimer.h"
 #include <random>
 
 class Game
@@ -54,6 +55,7 @@ private:
 	Snake snake;
 	Location moveDirection;
 	HighscoreTracker highscoreTracker;
+	FrameTimer timer;
 	std::random_device rd;
 	std::mt19937 rng;
 	std::uniform_int_distribution<int> xDist;
@@ -63,11 +65,11 @@ private:
 	Sound sndMusic = Sound(L"Sounds\\Music_Loop.wav", Sound::LoopType::AutoFullSound);
 	Sound sndTitle = Sound(L"Sounds\\Title.wav");
 	Collectible collectible;
-	int framesPerMove = 12;
-	int frameCounter = 0;
+	std::chrono::steady_clock::time_point startTime;
+	float dificultyUpTimeReduction;
+	float frameDuration = 0.2f;
 	bool hasStarted = false;
 	Location lastMovedDirection;
-	int endFramesCounter = 0;
-	int endFramesCount = 300;
-	int speedUp = 0;
+	std::chrono::steady_clock::time_point endTime;
+	bool endTitleShown = false;
 };
